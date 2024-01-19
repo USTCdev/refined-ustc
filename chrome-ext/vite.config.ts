@@ -31,6 +31,9 @@ export default defineConfig({
           js: ["./src/content/index.js"],
         },
       ],
+      background: {
+        service_worker: "./src/background/index.js",
+      },
       permissions: ["storage"],
     }),
   ],
