@@ -1,7 +1,3 @@
-/**
- * Refina.js + Basic-components
- */
-
 import { $app } from "refina";
 import Basics from "@refina/basic-components";
 import ConfigView from "./views/Config";
