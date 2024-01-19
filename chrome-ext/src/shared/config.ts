@@ -9,7 +9,11 @@ interface ConfigTypeMap {
 }
 
 export const configMeta = {
-  codeAutoFill: [ConfigType.Boolean, "自动填写验证码", false],
+  fillCode: [ConfigType.Boolean, "自动填写验证码", false],
+  autoLogin: [ConfigType.Boolean, "自动点击登录", false],
+  recClickLogin: [ConfigType.Boolean, "睿客网自动点击登录", true],
+  jwClickLogin: [ConfigType.Boolean, "教务系统自动点击登录", true],
+  jwPrettify: [ConfigType.Boolean, "教务系统美化", false],
 } satisfies Record<string, [type: ConfigType, label: string, hide: boolean]>;
 
 export type Config = {
@@ -26,12 +30,27 @@ export function getConfig() {
 
 export async function loadConfig() {
   config = (await storage.get(Object.keys(configMeta))) as Config;
-  config.codeAutoFill ??= true;
+  fixConfig();
   return config;
 }
 
 export async function saveConfig() {
+  fixConfig();
   await storage.set(config!);
+}
+
+export function fixConfig() {
+  config ??= {} as Config;
+
+  config.fillCode ??= true;
+  config.autoLogin ??= true;
+  config.recClickLogin ??= true;
+  config.jwClickLogin ??= true;
+  config.jwPrettify ??= true;
+
+  if (config.autoLogin) {
+    config.fillCode = true;
+  }
 }
 
 loadConfig();
